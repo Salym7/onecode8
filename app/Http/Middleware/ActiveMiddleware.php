@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class LogMiddleware
+class ActiveMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,9 +16,14 @@ class LogMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        if ($this->isActive($request)) {
+            return $next($request);
+        }
+        abort(403);
+    }
 
-        info($request->url(), $request->all());
-
-        return $next($request);
+    protected function isActive(Request $request)
+    {
+        return false;
     }
 }

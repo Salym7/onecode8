@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 
-class LogMiddleware
+class TokenMiddleware
 {
     /**
      * Handle an incoming request.
@@ -14,11 +14,17 @@ class LogMiddleware
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, string $token)
     {
+        // info('log', ['foo' => 'bar']);
+        // dd(['foo' => 'bar']);
+        // dump(['foo' => 'bar']);
+        // abort(500);
 
-        info($request->url(), $request->all());
-
-        return $next($request);
+        if ($request->input('token') === $token) {
+            return $next($request);
+        }
+        // return $next($request);
+        abort(403);
     }
 }

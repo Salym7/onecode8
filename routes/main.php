@@ -6,6 +6,7 @@ use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TestSome;
+use App\Http\Middleware\LogMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,21 +19,21 @@ use App\Http\Controllers\TestSome;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::view('/', 'home.index')->name('home');
 
 Route::redirect('/home', '/');
 
-Route::get('/test', TestController::class)->name('test');
+Route::get('/test', TestController::class)->name('test')->middleware('token:secret');
 
 Route::get('some', TestSome::class);
 
-Route::get('register', [RegisterController::class, 'index'])->name('register');
-Route::post('register', [RegisterController::class, 'store'])->name('register.store');
+Route::middleware('guest')->group(function () {
+    Route::get('register', [RegisterController::class, 'index'])->name('register');
+    Route::post('register', [RegisterController::class, 'store'])->name('register.store');
 
-Route::get('login', [RegisterController::class, 'index'])->name('login');
-Route::post('login', [RegisterController::class, 'store'])->name('login.store');
+    Route::get('login', [RegisterController::class, 'index'])->name('login'); //->withoutMiddleware('guest'); исключить из группы
+    Route::post('login', [RegisterController::class, 'store'])->name('login.store');
+});
 
 Route::get('blog', [BlogController::class, 'index'])->name('blog');
 Route::get('blog/{post}', [BlogController::class, 'showe'])->name('blog.show');
