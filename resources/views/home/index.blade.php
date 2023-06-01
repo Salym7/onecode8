@@ -1,23 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.base')
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laravel</title>
-</head>
+@section('page.title' , 'Main page')
 
-<body>
-    @php
-    $foo = 'bar'
-    @endphp
+@section('content')
 
-    {{$foo}}
-    @foreach([1,2,3] as $value)
-    {{$value}}
-    @endforeach
-    {!! $tag !!}
-</body>
+        <h1>Главная страница</h1>
+        Контент
 
-</html>
+@endsection
+        
