@@ -19,3 +19,10 @@ function hello()
 {
     return 'hello';
 }
+
+if (!function_exists('alert')) {
+    function alert($text)
+    {
+        session(['alert' => __($text)]);
+    }
+}

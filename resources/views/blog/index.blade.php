@@ -4,12 +4,14 @@
 
 @section('main.content')
 
-        {{-- <x-login.card/> --}}
-
             <x-title>
                 {{__('Просмотр поста')}}
             </x-title>
+
+            @include('blog.filter')
+
             <div class="row">
+
             @if (empty($posts))
                 <p>{{__("no one post")}}</p> 
             @else
@@ -21,11 +23,6 @@
                
                 @endforeach  
             @endif
-                {{-- <div class="row">
-                    <div class="col-12">
-
-                    </div>
-                </div> --}}
             </div>
 
         

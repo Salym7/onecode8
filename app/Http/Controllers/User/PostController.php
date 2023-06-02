@@ -21,11 +21,17 @@ class PostController extends Controller
     }
     public function create()
     {
+
         return view('user.posts.create');
     }
-    public function store()
+    public function store(Request $request)
     {
-        return 'Запрос создания поста';
+
+        // $title = $request->input('title');
+        // $content = $request->input('content');
+        // dd($title, $content);
+        alert(__('Saved'));
+        return redirect()->route('user.posts.show', 123);
     }
     public function show($post)
     {
@@ -47,14 +53,22 @@ class PostController extends Controller
             'content' => '
             Lorem ipsum dolor, sit amet consectetur adipisicing elit.<b> Sed deserunt praesentium alias omnis? Iure similique perferendis libero facilis</b>, dolores in?',
         ];
+
+        alert(__('edited'));
+
         return view('user.posts.edit', compact('post'));
     }
-    public function update()
+    public function update(Request $request, $post)
     {
-        return 'Страница изменения поста';
+        $title = $request->input('title');
+        $content = $request->input('content');
+        // dd($title, $content);
+
+        // return redirect()->route('user.posts.show', $post);
+        return redirect()->back();
     }
-    public function delete()
+    public function delete($post)
     {
-        return 'Страница удаление постов';
+        return redirect()->route('user.posts');
     }
 }

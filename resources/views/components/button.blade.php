@@ -1,3 +1,3 @@
-<button class="btn btn-primary" {{$attributes}}>
+<button {{$attributes->class(["btn", "btn-primary"])}}>
 {{$slot}}
 </button>

@@ -24,7 +24,9 @@ Route::view('/', 'home.index')->name('home');
 
 Route::redirect('/home', '/');
 
-Route::get('/test', TestController::class)->name('test')->middleware('token:secret');
+Route::get('/test', TestController::class)->name('test');
+// Route::get('/test', TestController::class)->name('test')->middleware('token:secret');
+
 
 Route::get('some', TestSome::class);
 
