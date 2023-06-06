@@ -15,14 +15,21 @@ if (!function_exists('active_link')) {
         return Route::is($name) ? $class : '';
     }
 }
-function hello()
-{
-    return 'hello';
-}
+// function hello()
+// {
+//     return 'hello';
+// }
 
 if (!function_exists('alert')) {
     function alert($text)
     {
         session(['alert' => __($text)]);
+    }
+}
+
+if (!function_exists('validate')) {
+    function validate(array $attributes, array $rules): array
+    {
+        return validator($attributes, $rules)->validate();
     }
 }

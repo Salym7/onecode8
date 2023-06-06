@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Post\StorePostRequest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class PostController extends Controller
 {
@@ -26,10 +28,29 @@ class PostController extends Controller
     }
     public function store(Request $request)
     {
+        // $validated = $request->validated();
 
-        // $title = $request->input('title');
-        // $content = $request->input('content');
-        // dd($title, $content);
+        // $validated = $request->validate([
+        //     'title' => ['required', 'string', 'max:100'],
+        //     'content' => ['required', 'string', 'max:10000'],
+        // ]);
+
+        // $validated = validator($request->all(), [
+        //     'title' => ['required', 'string', 'max:100'],
+        //     'content' => ['required', 'string', 'max:10000'],
+        // ])->validate();
+        $validated = validate($request->all(), [
+            'title' => ['required', 'string', 'max:100'],
+            'content' => ['required', 'string', 'max:10000'],
+        ]);
+
+        // if (true) {
+        //     throw ValidationException::withMessages([
+        //         'account' => __('dont money'),
+        //     ]);
+        // }
+        dd($validated);
+
         alert(__('Saved'));
         return redirect()->route('user.posts.show', 123);
     }
@@ -54,17 +75,29 @@ class PostController extends Controller
             Lorem ipsum dolor, sit amet consectetur adipisicing elit.<b> Sed deserunt praesentium alias omnis? Iure similique perferendis libero facilis</b>, dolores in?',
         ];
 
-        alert(__('edited'));
+
 
         return view('user.posts.edit', compact('post'));
     }
     public function update(Request $request, $post)
     {
+        alert(__('edited'));
         $title = $request->input('title');
         $content = $request->input('content');
         // dd($title, $content);
 
         // return redirect()->route('user.posts.show', $post);
+        $validated = validate($request->all(), [
+            'title' => ['required', 'string', 'max:100'],
+            'content' => ['required', 'string', 'max:10000'],
+        ]);
+
+        // if (true) {
+        //     throw ValidationException::withMessages([
+        //         'account' => __('dont money'),
+        //     ]);
+        // }
+        dd($validated);
         return redirect()->back();
     }
     public function delete($post)
