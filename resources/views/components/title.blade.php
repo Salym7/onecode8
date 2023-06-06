@@ -19,3 +19,5 @@
 
     </div>
 </div>
+
+<x-errors/>
