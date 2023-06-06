@@ -11,6 +11,7 @@
     </x-card-header>
 
     <x-card-body>
+        <x-errors/>    
         <x-form action="{{route('register.store')}}" method="POST" >
             <input type="hidden" name="_token" value="{{csrf_token()}}">
             {{-- <x-form-item>  --}}
@@ -31,11 +32,11 @@
             <x-form-item>
                 <x-label for="exampleInputPassword2" class="form-label">{{__('Reapet password')}}
                 </x-label>
-                <x-input type="password" name="password2" class="form-control" id="exampleInputPassword2"/>
+                <x-input type="password" name="password_confirmation" class="form-control" id="exampleInputPassword2"/>
             </x-form-item>
 
             <x-form-item>
-                <x-checkbox value="1" name="remember">
+                <x-checkbox value="1" name="agreement">
                 {{__('read docum')}}
                 </x-checkbox>
             </x-form-item>
