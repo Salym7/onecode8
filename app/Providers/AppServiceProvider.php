@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -32,5 +33,8 @@ class AppServiceProvider extends ServiceProvider
         View::composer('admin*', function ($view) {
             $view->with('balance', 12345);
         });
+
+
+        Paginator::useBootstrapFive();
     }
 }

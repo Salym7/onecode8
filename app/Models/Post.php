@@ -15,6 +15,10 @@ class Post extends Model
         'published', 'published_at',
     ];
 
-    protected $casts = ['published' => 'boolean'];
+    protected $casts = [
+        'user_id' => 'integer',
+        'published_at' => 'datetime',
+        'published' => 'boolean',
+    ];
     protected $dates = ['published_at',];
 }
