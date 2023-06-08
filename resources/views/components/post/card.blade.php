@@ -6,7 +6,7 @@
             </a>
         </h5>
         <div class="small text-muted">
-            {{ $post->published_at->diffForHumans() }}
+            {{ $post->published_at?->diffForHumans() }}
         </div>
         {{$post->id}}
     </x-card-body>

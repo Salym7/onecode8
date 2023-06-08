@@ -12,18 +12,17 @@ class Currency extends Model
     public $incrementing = false;
 
     public $fillable = [
-        'id', 'name', 'price',
-        'active', 'sort', 'secret',
+        'id', 'name',
     ];
 
-    protected $hidden = [
-        'price',
-    ];
+    // protected $hidden = [
+    //     'price',
+    // ];
 
-    protected $casts = [
-        'price' => 'float',
-        'active' => 'boolean',
-        'sort' => 'integer',
-        'secret' => 'encrypted',
-    ];
+    // protected $casts = [
+    //     'price' => 'float',
+    //     'active' => 'boolean',
+    //     'sort' => 'integer',
+    //     'secret' => 'encrypted',
+    // ];
 }

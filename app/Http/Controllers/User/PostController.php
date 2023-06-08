@@ -4,20 +4,50 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\StorePostRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use App\Models\Post;
 
 class PostController extends Controller
 {
-    public function index()
+
+    public function index(Request $request)
     {
-        $post = (object) [
-            'id' => '123',
-            'title' => 'Lorem ipsum dolor sit amet.',
-            'content' => '
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.<b> Sed deserunt praesentium alias omnis? Iure similique perferendis libero facilis</b>, dolores in?',
-        ];
-        $posts = array_fill(0, 10, $post);
+        $validated =  $request->validate([
+            'limit' => ['nullable', 'integer', 'min:1', 'max:100'],
+            'page' => ['nullable', 'integer', 'min:1', 'max:100'],
+            'search' => ['nullable', 'string', 'max:50'],
+            'from_date' => ['nullable', 'string', 'date'],
+            'to_date' => ['nullable', 'string', 'date', 'after:from_date'],
+            'tag' => ['nullable', 'string', 'max:10'],
+        ]);
+        $page   = $validated['page'] ?? 1;
+        $limit   = $validated['limit'] ?? 12;
+        $offset   = $limit * ($page - 1);
+
+        $query = Post::query()
+            ->where('published', true)
+            ->whereNotNull('published_at');
+
+        if ($search = $validated['search'] ?? null) {
+            $query->where('title', 'like', "%{$search}%");
+        }
+        if ($fromDate = $validated['from_date'] ?? null) {
+
+            $query->where('published_at', '>=', new Carbon($fromDate));
+        }
+        if ($toDate = $validated['to_date'] ?? null) {
+
+            $query->where('published_at', '<=', new Carbon($toDate));
+        }
+        if ($tag = $validated['tag'] ?? null) {
+
+            $query->whereJsonContains('tags', $tag);
+        }
+        $posts = $query->latest('published_at')
+            ->paginate(12);
 
         return view('user.posts.index', compact('posts'));
     }
@@ -54,15 +84,15 @@ class PostController extends Controller
         alert(__('Saved'));
         return redirect()->route('user.posts.show', 123);
     }
-    public function show($post)
+    public function show(Request $request, $post)
     {
-
-        $post = (object) [
-            'id' => '123',
-            'title' => 'Lorem ipsum dolor sit amet.',
-            'content' => '
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit.<b> Sed deserunt praesentium alias omnis? Iure similique perferendis libero facilis</b>, dolores in?',
-        ];
+        $post = cache()->remember(
+            key: "posts.{$post}",
+            ttl: now()->addHour(),
+            callback: function () use ($post) {
+                return Post::query()->findOrFail($post);
+            }
+        );
 
         return view('user.posts.show', compact('post'));
     }
